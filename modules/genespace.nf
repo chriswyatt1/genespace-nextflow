@@ -10,11 +10,11 @@ process GENESPACE {
 
     output:
         
-        path( "/tmp/testGenespace/results/*" )
+        path( "./testGenespace/results/*" )
 
     script:
     """
-    Rscript --vanilla < ./bin/genespace.R  > outputofscript
+    /opt/conda/bin/Rscript --vanilla /workspace/genespace-nextflow/bin/genespace.R
     """
 }
 

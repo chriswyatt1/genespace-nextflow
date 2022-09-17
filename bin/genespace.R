@@ -1,3 +1,4 @@
+#!/opt/conda/bin/Rscript
 library(GENESPACE)
 runwd <- file.path("/tmp/testGenespace")
 make_exampleDataDir(writeDir = runwd)
