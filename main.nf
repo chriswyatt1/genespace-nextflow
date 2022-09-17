@@ -13,6 +13,7 @@
  */
  
 params.outdir = "Results"
+//Path to a folder with the genomes in a specific structure
 params.input = "data/Example.csv"
 
 
@@ -29,22 +30,16 @@ log.info """\
 include { GENESPACE } from './modules/genespace.nf'
 
 
-Channel
-    .fromPath(params.input)
-    .splitCsv()
-    .set { in_file }
-
-Channel
-    .fromPath(params.input)
-    .splitCsv()
-    .collect()
-    .set { in_file_config }
+//Channel
+//    .fromPath(params.input)
+//    .splitCsv()
+//    .set { in_file }
 
 
 
 workflow {
 
-     GENESPACE ( in_file )
+     GENESPACE ( )
     
 }
 
