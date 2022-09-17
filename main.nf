@@ -4,7 +4,7 @@
 
  /*
  * Authors:
- * - Chris Wyatt <chris.wyatt@seqera.io>
+ * - Chris Wyatt <>
  */
 
 /*
@@ -14,34 +14,23 @@
  
 params.outdir = "Results"
 params.input = "data/Example.csv"
-params.seqids = "data/default1"
-params.layout = "data/default2"
-params.hex = "data/unique_hex2"
-params.test=0
 
 
 log.info """\
  ===================================
  input file                           : ${params.input}
  output directory                     : ${params.outdir}
- seqids file (optional)               : ${params.seqids}
- layout file (optional)               : ${params.layout}
  """
 
 //================================================================================
 // Include modules
 //================================================================================
 
-include { GFFREAD } from './modules/gffread.nf'
-include { JCVI } from './modules/jcvi.nf'
-include { SYNTENY } from './modules/synteny.nf'
-include { MACRO } from './modules/macro.nf'
-include { CONFIG } from './modules/default_config.nf'
-include { DOWNLOAD_NCBI } from './modules/download_ncbi.nf'
-include { CHROMOPAINT } from './modules/chromo.nf'
+include { GENESPACE } from './modules/genespace.nf'
+
 
 Channel
-	.fromPath(params.input)
+    .fromPath(params.input)
     .splitCsv()
     .set { in_file }
 
@@ -51,47 +40,11 @@ Channel
     .collect()
     .set { in_file_config }
 
-Channel
-    .fromPath(params.seqids)
-    .set { in_seqids }
-
-Channel
-    .fromPath(params.layout)
-    .set { in_layout }   
-
-Channel
-    .fromPath(params.hex)
-    .set { in_hex } 
-
-Channel
-    .fromPath(params.input)
-    .splitCsv()
-    .branch { 
-        ncbi: it.size() == 2 
-        local: it.size() == 3
-    }
-    .set { input_type }
-    
-// input_type.ncbi.view { "$it is small" }
-// input_type.local.view { "$it is large" }
-
 
 
 workflow {
 
-    DOWNLOAD_NCBI ( input_type.ncbi )
-
-    GFFREAD ( DOWNLOAD_NCBI.out.genome.mix(input_type.local) )
-
-    JCVI ( GFFREAD.out.proteins )
-
-    CONFIG ( in_seqids , in_layout , DOWNLOAD_NCBI.out.genome.mix(input_type.local).collect() )
-
-    SYNTENY ( JCVI.out.collect() )
-
-    MACRO ( CONFIG.out.seqids_out , CONFIG.out.layout_out , SYNTENY.out.anchors, JCVI.out.collect() )
-
-    CHROMOPAINT ( in_hex , SYNTENY.out.anchors , JCVI.out.collect() )
+     GENESPACE ( in_file )
     
 }
 
