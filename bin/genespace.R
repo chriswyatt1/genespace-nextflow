@@ -1,7 +1,19 @@
-#!/opt/conda/bin/Rscript
+#!/opt/conda/bin/Rscript --save
 library(GENESPACE)
+
+old_path <- Sys.getenv("PATH")
+
+Sys.setenv(PATH = paste(old_path, "/opt/conda/bin/", sep = ":"))
+
+system("echo $PATH")
+
+Sys.which("/opt/conda/bin/orthofinder")
+
 runwd <- file.path("/tmp/testGenespace")
+
 make_exampleDataDir(writeDir = runwd)
+
+setwd("/tmp/testGenespace")
 
 gids <- c("human","chimp","rhesus")
 gpar <- init_genespace(

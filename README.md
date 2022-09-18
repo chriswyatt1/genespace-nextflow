@@ -8,3 +8,15 @@ Step 2: click this link: `https://gitpod.io/#https://github.com/chriswyatt1/gene
 To run the example dataset in gitpod, use:
 
 ` ./nextflow run main.nf -profile docker`
+
+Step 3: To run your own data:
+
+
+## Important
+
+I had to manually install orthofinder into the bin directory, as the docker container could not find the executable when running Nextflow, despite it finding it when running the container interactively. This need to be fixed.
+
+
+# To test the Docker container:
+
+`docker run -it chriswyatt/genespaces bash`

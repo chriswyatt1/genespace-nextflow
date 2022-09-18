@@ -14,7 +14,7 @@ process GENESPACE {
 
     script:
     """
-    /opt/conda/bin/Rscript --vanilla /workspace/genespace-nextflow/bin/genespace.R
+    genespace.R
     """
 }
 
